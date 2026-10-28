@@ -1,0 +1,13 @@
+.dart_tool/
+.packages
+.pub/
+build/
+coverage/
+.env
+.env.*
+*.log
+!.env.example
+doc/api/
+.idea/
+*.iml
+doc/superpowers/

@@ -1,0 +1,30 @@
+name: dart_notify
+description: Type-safe notifications for Dart servers. OneSignal and Expo push, SMTP, Resend, Netgsm, İletimerkezi, Verimor, Webhook, Telegram, Discord, Slack, ntfy and Gotify.
+version: 1.0.0
+repository: https://github.com/Aksoyhlc/dart_notify
+issue_tracker: https://github.com/Aksoyhlc/dart_notify/issues
+topics:
+  - notifications
+  - push-notifications
+  - email
+  - sms
+  - webhook
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  windows:
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  http: ^1.6.0
+  http_parser: ^4.1.2
+  mailer: ^7.2.0
+
+dev_dependencies:
+  lints: ^6.1.0
+  test: ^1.33.0
