@@ -1,9 +1,10 @@
-## 1.1.0
+## 1.1.1
 
 - Add Postmark email with shared email types, message streams and file attachments.
 - Add Twilio SMS with API key or Account Auth Token authentication and optional status callbacks.
 - Add Pushover push with device targeting, image attachments and emergency receipts.
 - Add WhatsApp Cloud API text messages and approved templates with named or positional text parameters.
+
 
 ## 1.0.0
 
