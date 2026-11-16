@@ -1,4 +1,4 @@
-## 1.0.0
+## 1.1.0
 
 - Add Postmark email with shared email types, message streams and file attachments.
 - Add Twilio SMS with API key or Account Auth Token authentication and optional status callbacks.
