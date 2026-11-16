@@ -5,12 +5,12 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Type-safe notifications for Dart backends. Send push, email, SMS and chat
-messages through 13 providers, or your own, with one dispatcher and one result
+messages through 17 providers, or your own, with one dispatcher and one result
 model.
 
-- **One API for every channel:** OneSignal and Expo push, SMTP and Resend email,
-  Netgsm, İletimerkezi and Verimor SMS, Telegram, Discord, Slack, ntfy, Gotify
-  and generic Webhook.
+- **One API for every channel:** OneSignal, Expo and Pushover push, SMTP, Resend
+  and Postmark email, Netgsm, İletimerkezi, Verimor and Twilio SMS, WhatsApp,
+  Telegram, Discord, Slack, ntfy, Gotify and generic Webhook.
 - **Type-safe routing:** each provider has its own target, options and config
   types; mismatches fail at compile time or before any request is sent.
 - **Named destinations and groups:** register destinations once, then send to
@@ -20,8 +20,8 @@ model.
   bodies.
 - **Safe retries only:** automatic retries run only where the upstream API
   supports idempotency keys; a shared FIFO limiter bounds concurrent deliveries.
-- **Attachments** for SMTP, Resend, Telegram and Discord, with provider limits
-  checked before sending.
+- **Attachments** for SMTP, Resend, Postmark, Telegram, Discord and Pushover,
+  with provider limits checked before sending.
 
 ## Install
 
@@ -145,13 +145,17 @@ that do not match the provider reject the whole call before any request.
 | [Expo Push](doc/providers/expo.md) | `ExpoPushProvider` | Push | No | No |
 | [SMTP](doc/providers/smtp.md) | `SmtpProvider` | Email | Yes | No |
 | [Resend](doc/providers/resend.md) | `ResendProvider` | Email | Yes | Yes |
+| [Postmark](doc/providers/postmark.md) | `PostmarkProvider` | Email | Yes | No |
 | [Netgsm](doc/providers/netgsm.md) | `NetgsmProvider` | SMS | No | No |
 | [İletimerkezi](doc/providers/iletimerkezi.md) | `IletimerkeziProvider` | SMS | No | No |
 | [Verimor](doc/providers/verimor.md) | `VerimorProvider` | SMS | No | No |
+| [Twilio](doc/providers/twilio.md) | `TwilioProvider` | SMS | No | No |
 | [Webhook](doc/providers/webhook.md) | `WebhookProvider` | HTTPS JSON | No | With idempotency header |
 | [Telegram](doc/providers/telegram.md) | `TelegramProvider` | Chat | 1 file | No |
 | [Discord](doc/providers/discord.md) | `DiscordProvider` | Chat | Up to 10 files | No |
 | [Slack](doc/providers/slack.md) | `SlackProvider` | Chat | No | No |
+| [WhatsApp Cloud API](doc/providers/whatsapp.md) | `WhatsAppProvider` | Chat | No | No |
+| [Pushover](doc/providers/pushover.md) | `PushoverProvider` | Push | 1 image | No |
 | [ntfy](doc/providers/ntfy.md) | `NtfyProvider` | Self-hosted push | Remote URL | No |
 | [Gotify](doc/providers/gotify.md) | `GotifyProvider` | Self-hosted push | No | No |
 

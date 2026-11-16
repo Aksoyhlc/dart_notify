@@ -1,6 +1,6 @@
 ---
 name: dart-notify
-description: Write correct Dart code with the dart_notify package (pub.dev) to send push, email, SMS and chat notifications through OneSignal, Expo Push, SMTP, Resend, Netgsm, İletimerkezi, Verimor, Webhook, Telegram, Discord, Slack, ntfy or Gotify. Use this skill whenever a Dart, Dart Frog, Serverpod, shelf or Flutter project depends on dart_notify or wants to add notifications, alerts, OTP/SMS, transactional email or chat-ops messages from Dart, even if the user only says "send an SMS from my backend", "notify the team on Slack" or "add push notifications" without naming the package. Also use it when handling DeliveryResult or DispatchReport, retries, attachments, or writing tests or a custom provider for dart_notify.
+description: Write correct Dart code with dart_notify for push, transactional email, SMS, WhatsApp, chat and webhook notifications. Covers OneSignal, Expo Push, SMTP, Resend, Postmark, Netgsm, İletimerkezi, Verimor, Twilio, Telegram, Discord, Slack, ntfy, Gotify, Pushover, WhatsApp Cloud API and custom providers. Use for notification dispatch, delivery results, retries and attachments in Dart backends.
 ---
 
 # dart_notify
@@ -32,7 +32,7 @@ A provider only accepts its own target and options types; mixing them fails at
 compile time or when the destination is built. Look up the exact constructor
 names in [references/providers.md](references/providers.md) before writing
 provider code: the class names are not always guessable (`ExpoPushProvider`,
-`EmailTarget` shared by SMTP and Resend, `OneSignalTarget.externalIds`).
+`EmailTarget` shared by SMTP, Resend and Postmark, `OneSignalTarget.externalIds`).
 
 ## Two ways to send
 
@@ -99,8 +99,7 @@ providers whose API deduplicates by that key retry automatically: **OneSignal,
 Resend, and Webhook when `WebhookConfig.idempotencyHeader` is set**. Configure
 them with `DartNotify(retryPolicy: RetryPolicy(maxAttempts: 5))`.
 
-Every other provider (SMTP, all SMS providers, Expo, Telegram, Discord, Slack,
-ntfy, Gotify) makes exactly one attempt on purpose: after a timeout the message
+Every other provider makes exactly one attempt: after a timeout the message
 may already be delivered, and a second request would send a duplicate SMS or
 email. So do not wrap `send` in your own retry loop for these providers. If the
 application needs at-least-once delivery, persist the job in its own queue and
@@ -128,14 +127,17 @@ accept the duplicate risk explicitly, ideally only for `failed` with
 - Telegram HTML mode (`TelegramOptions(parseMode: TelegramParseMode.html)`) uses
   `htmlBody` when present; the title is escaped for you, the body is not.
 - Attachments go on `NotifyMessage.attachments` as `NotifyAttachment(fileName:,
-  bytes: Uint8List, contentType:)`. Only SMTP, Resend, Telegram (1 file) and
-  Discord (up to 10) accept them; other destinations fail with
+  bytes: Uint8List, contentType:)`. SMTP, Resend, Postmark, Telegram (1 file),
+  Discord (up to 10) and Pushover (1 image) accept them. Other destinations fail with
   `attachment_unsupported`. ntfy can link a remote file via `NtfyOptions.attachUrl`.
 - SMS numbers: İletimerkezi and Verimor accept Turkish mobiles such as
   `0532 123 45 67`, `+90532...` or `532...` and normalize them to
   `905321234567`. Netgsm takes 10–17 digits without spaces (a leading `+`
   becomes `00`) and also allows international numbers. An invalid number throws
   `ArgumentError` when the target is built, so validate user input first.
+- Twilio and WhatsApp target one international E.164 number per destination.
+  WhatsApp free-form text requires an open customer service window. Outside
+  the window, use `WhatsAppOptions.template` with an approved template.
 - Scheduled SMS times (`sendAt`, `startAt`) are Türkiye-local `DateTime`s, not
   UTC. Commercial (İYS) sends need the recipient-type option.
 

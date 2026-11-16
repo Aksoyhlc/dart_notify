@@ -6,10 +6,10 @@ an optional `client: http.Client` (for tests or custom clients) and have
 
 ## Contents
 
-- [Push: OneSignal, Expo](#push)
-- [Email: SMTP, Resend](#email)
-- [SMS: Netgsm, İletimerkezi, Verimor](#sms)
-- [Chat: Telegram, Discord, Slack](#chat)
+- [Push: OneSignal, Expo, Pushover](#push)
+- [Email: SMTP, Resend, Postmark](#email)
+- [SMS: Netgsm, İletimerkezi, Verimor, Twilio](#sms)
+- [Chat: Telegram, Discord, Slack, WhatsApp](#chat)
 - [Self-hosted push: ntfy, Gotify](#self-hosted-push)
 - [Webhook](#webhook)
 - [Custom providers](#custom-providers)
@@ -52,10 +52,28 @@ final expo = ExpoPushProvider(
   from your store. Mixed results → `partiallyAccepted`, message lists token
   indexes (never tokens).
 
+### Pushover
+
+```dart
+final push = PushoverProvider(
+  id: 'pushover',
+  config: PushoverConfig(appToken: env('PUSHOVER_APP_TOKEN')),
+);
+PushoverTarget(userKey: env('PUSHOVER_USER_KEY'), devices: ['phone']);
+PushoverOptions(
+  priority: PushoverPriority.emergency,
+  retryEvery: Duration(minutes: 1),
+  expireAfter: Duration(minutes: 30),
+);
+```
+
+Accepts one image of up to 5,242,880 bytes. Emergency sends return the Pushover
+receipt as `messageId`. Pushover itself handles emergency repetitions.
+
 ## Email
 
 `EmailAddress('a@b.com', name: 'Name')`, `EmailTarget(to: [...], cc: [...],
-bcc: [...])` and `EmailOptions(replyTo: [...])` are shared by both providers.
+bcc: [...])` and `EmailOptions(replyTo: [...])` are shared by all three providers.
 `title` → subject, `body` → text, `htmlBody` → HTML part.
 
 ### SMTP
@@ -91,9 +109,25 @@ At least one `to` recipient (max 50); attachments ≤ 40 MB after base64.
 Codes: `resend_rate_limited` (retried), `resend_quota_exceeded`,
 `resend_validation`, `resend_auth`, `resend_forbidden`.
 
+### Postmark
+
+```dart
+final email = PostmarkProvider(
+  id: 'postmark',
+  config: PostmarkConfig(
+    serverToken: env('POSTMARK_SERVER_TOKEN'),
+    from: EmailAddress('alerts@example.com'),
+    messageStream: 'outbound',
+  ),
+);
+```
+
+Requires at least one To recipient and supports up to 50 recipients across
+To, Cc and Bcc. Attachments count toward the 10 MB limit after base64 encoding.
+
 ## SMS
 
-All three reject a blank `body` and make a single attempt.
+All four reject a blank `body` and make a single attempt.
 
 ### Netgsm
 
@@ -148,6 +182,25 @@ VerimorOptions(
 Codes such as `verimor_insufficient_credits`; unknown upstream text becomes
 `verimor_unknown_error`.
 
+### Twilio
+
+```dart
+final sms = TwilioProvider(
+  id: 'twilio-sms',
+  config: TwilioConfig(
+    accountSid: env('TWILIO_ACCOUNT_SID'),
+    apiKeySid: env('TWILIO_API_KEY_SID'),
+    apiKeySecret: env('TWILIO_API_KEY_SECRET'),
+    from: '+14155550123',
+  ),
+);
+TwilioTarget(number: '+14155550124');
+```
+
+Use `from`, `messagingServiceSid` or both. Account SID and Auth Token
+credentials use `TwilioConfig.withAuthToken`. `TwilioOptions(statusCallback:)`
+sets an HTTPS delivery status callback.
+
 ## Chat
 
 ### Telegram
@@ -196,6 +249,29 @@ SlackOptions(
 The message text is the notification fallback and is required when blocks are
 used; ≤ 50 blocks, block text ≤ 3000 characters. The bot must be invited to the
 channel, otherwise `slack_not_in_channel` / `slack_channel_not_found`.
+
+### WhatsApp
+
+```dart
+final chat = WhatsAppProvider(
+  id: 'whatsapp',
+  config: WhatsAppConfig(
+    phoneNumberId: env('WHATSAPP_PHONE_NUMBER_ID'),
+    accessToken: env('WHATSAPP_ACCESS_TOKEN'),
+    graphApiVersion: env('META_GRAPH_API_VERSION'),
+  ),
+);
+WhatsAppTarget(number: '+905321234567');
+WhatsAppOptions.template(
+  name: 'order_ready',
+  languageCode: 'en_US',
+  bodyParameters: [WhatsAppTemplateParameter.positional('A123')],
+);
+```
+
+`WhatsAppOptions.text(previewUrl: true)` sends the plain body within the
+customer service window. Template mode supports named or positional header
+and body text parameters. Use an approved template outside the window.
 
 ## Self-hosted push
 

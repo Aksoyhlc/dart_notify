@@ -1,6 +1,4 @@
-/// Server-side notifications via OneSignal and Expo push, SMTP, Resend, Netgsm,
-/// Verimor, İletimerkezi, Webhook, Telegram, Discord, Slack, ntfy and Gotify,
-/// plus custom providers.
+/// Server-side push, email, SMS, chat, WhatsApp and webhook notifications.
 /// Keep provider credentials on trusted servers.
 library;
 
@@ -75,6 +73,13 @@ export 'src/providers/onesignal/onesignal_provider.dart';
 export 'src/providers/onesignal/options/onesignal_options.dart';
 export 'src/providers/onesignal/targets/onesignal_target.dart';
 export 'src/providers/onesignal/typedefs/one_signal_http_client.dart';
+export 'src/providers/postmark/config/postmark_config.dart';
+export 'src/providers/postmark/postmark_provider.dart';
+export 'src/providers/pushover/config/pushover_config.dart';
+export 'src/providers/pushover/enums/pushover_priority.dart';
+export 'src/providers/pushover/options/pushover_options.dart';
+export 'src/providers/pushover/pushover_provider.dart';
+export 'src/providers/pushover/targets/pushover_target.dart';
 export 'src/providers/resend/config/resend_config.dart';
 export 'src/providers/resend/resend_provider.dart';
 export 'src/providers/smtp/config/smtp_config.dart';
@@ -88,9 +93,18 @@ export 'src/providers/smtp/transport/smtp_transport.dart';
 export 'src/shared/transport/json_http_transport.dart';
 export 'src/shared/transport/multipart_file_part.dart';
 export 'src/shared/transport/multipart_http_transport.dart';
+export 'src/providers/twilio/config/twilio_config.dart';
+export 'src/providers/twilio/options/twilio_options.dart';
+export 'src/providers/twilio/targets/twilio_target.dart';
+export 'src/providers/twilio/twilio_provider.dart';
 export 'src/providers/webhook/config/webhook_config.dart';
 export 'src/providers/webhook/enums/webhook_method.dart';
 export 'src/providers/webhook/options/webhook_options.dart';
 export 'src/providers/webhook/targets/webhook_target.dart';
 export 'src/providers/webhook/typedefs/webhook_payload_builder.dart';
 export 'src/providers/webhook/webhook_provider.dart';
+export 'src/providers/whatsapp/config/whatsapp_config.dart';
+export 'src/providers/whatsapp/options/whatsapp_options.dart';
+export 'src/providers/whatsapp/options/whatsapp_template_parameter.dart';
+export 'src/providers/whatsapp/targets/whatsapp_target.dart';
+export 'src/providers/whatsapp/whatsapp_provider.dart';

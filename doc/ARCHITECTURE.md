@@ -124,8 +124,8 @@ public import stable while exporting the relocated types.
 
 `NotifyMessage` contains shared content. `NotificationTarget` identifies
 recipients. `NotificationOptions` contains provider-specific delivery settings.
-`EmailAddress`, `EmailTarget` and `EmailOptions` are shared by SMTP and Resend
-and live under `shared/email`, not inside either provider. Attachments are
+`EmailAddress`, `EmailTarget` and `EmailOptions` are shared by SMTP, Resend and
+Postmark and live under `shared/email`. Attachments are
 content: `NotifyMessage.attachments` holds `NotifyAttachment`
 values, and providers declare `supportsAttachments` when the service accepts
 files. SMTP reply-to stays an option; OneSignal targeting does not contain
@@ -177,6 +177,8 @@ Expo Push, İletimerkezi and Verimor also opt out: tickets, order IDs and campai
 IDs are tracking identifiers, not deduplication guarantees. Resend opts in: every
 request carries the delivery's idempotency key as `Idempotency-Key`, so retries
 are safe within the key's 24-hour window.
+Postmark, Twilio, Pushover and WhatsApp each make one request per delivery.
+Pushover emergency repeats happen inside Pushover after it accepts that request.
 See [Netgsm](providers/netgsm.md), [Webhook](providers/webhook.md),
 [Resend](providers/resend.md) and the ops provider guides for their request
 mappings and acceptance semantics.
