@@ -5,7 +5,6 @@
 - Add Pushover push with device targeting, image attachments and emergency receipts.
 - Add WhatsApp Cloud API text messages and approved templates with named or positional text parameters.
 
-
 ## 1.0.0
 
 Initial public release.
